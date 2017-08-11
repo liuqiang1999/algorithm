@@ -1,0 +1,80 @@
+public class Solution {
+        // search in s say x and y is less than k
+        // then, divide s by s and y, for each small string , do the same
+        // stop when no less than k
+    public int longestSubstring_faster(String s, int k) {
+        return helper1(s, k);
+    }
+    
+    public int helper1(String s, int k) {
+        if(s.length() == 0) return 0;
+        int[] count = new int[26];
+        for(char c : s.toCharArray()) count[c - 'a'] ++;
+        int res = -1, start = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(count[s.charAt(i) - 'a'] < k) {
+                res = Math.max(res, helper1(s.substring(start, i), k));
+                start = i + 1;
+            } 
+        }
+        if(start != 0) res = Math.max(res, helper1(s.substring(start), k));
+        return res == -1 ? s.length() : res;
+    }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // sdlfjlwfjowjflasdjfsjflaslflsflasdf
+    //      begin      end
+    //                     if(uniq == uniq>k) means all >k, (end-beign) is the length
+    //                     but when end increase, begin may go back           n*n
+    //
+    // solution: since it must be continous string
+    // we brutal force check n=1,2,...26 all possible number of uniq chars, one of them must be correct
+    //                     while(uniq > uniqTarget){begin++}
+    
+    
+    
+    
+    // O(n) easy understand
+public int longestSubstring_cool(String s, int k) {
+    int d = 0;
+    
+    for (int numUniqueTarget = 1; numUniqueTarget <= 26; numUniqueTarget++)
+        d = Math.max(d, longestSubstringWithNUniqueChars(s, k, numUniqueTarget));
+    
+    return d;
+}
+
+private int longestSubstringWithNUniqueChars(String s, int k, int numUniqueTarget) {
+    int[] map = new int[128];
+    int numUnique = 0;           // counter 1  , how many different char
+    int numNoLessThanK = 0;      // counter 2  , different chars that show more than k times
+    int begin = 0, end = 0;
+    int d = 0;
+    
+    while (end < s.length()) {
+        if (map[s.charAt(end)]++ == 0) numUnique++; // increment map[c] after this statement
+        if (map[s.charAt(end++)] == k) numNoLessThanK++; // inc end after this statement
+        
+        while (numUnique > numUniqueTarget) {
+            if (map[s.charAt(begin)]-- == k) numNoLessThanK--; // decrement map[c] after this statement
+            if (map[s.charAt(begin++)] == 0) numUnique--; // inc begin after this statement
+        }
+        
+        // if we found a string where the number of unique chars equals our target
+        // and all those chars are repeated at least K times then update max
+        if (numUnique == numUniqueTarget && numUnique == numNoLessThanK)
+            d = Math.max(end - begin, d);
+    }
+    
+    return d;
+}
+    
+    
+}

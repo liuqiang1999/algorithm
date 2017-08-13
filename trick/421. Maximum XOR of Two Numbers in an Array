@@ -37,11 +37,11 @@ ex: nums= 10010, 01010, 11101   -> (11000)
     now    i=1, mask=11110, set=(10010,01010,11100), tmp=max|10=11010 (max possible value, can we add 10?)
            tmp^each set =       (01000,10000,00100), set contains nothing  !!
            
-    set.contains((max|0010)^(setItem))     means:
+    set.contains((max00|0010)^(setItem))     means:
     set.contains(((m1^m2)|0010)^setItem)   means: m1(i)=0 and m2(i)=1
     set.contains(((m1^m2)|00i0)^(m3&1110)) means:
-    m4=((m1^m2)|1110)^(m3&1110))           means:
-    m3^m4 = ((m1^m2)|1110)^((m3&1110)^m3) = ((m1^m2)|1110)^0000 = 1110             !!!!!!!!!!!***********!!!!!!!!!!!!!
+    m4=((m1^m2)|0010)^(m3&1110))           means:
+    m3^m4 = ((m1^m2)|0010)^((m3&1110)^m3) = ((m1^m2)|0010)^0000 = (max)10 = newMax        !!!!!!!!!!!***********!!!!!!!!!!!!!
 
 example: Given [14, 11, 7, 2], which in binary are [1110, 1011, 0111, 0010].
 Since the MSB is 3, I'll start from i = 3 to make it simplify.
